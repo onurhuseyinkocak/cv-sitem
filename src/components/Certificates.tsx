@@ -8,27 +8,15 @@ const Certificates = () => {
     const { certificates } = cvData;
     const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
 
-
-    // STRICT MODAL LOCK: Block ALL background interactions
+    // Disable body scroll when modal is open
     useEffect(() => {
         if (selectedCert) {
-            const scrollY = window.scrollY;
             document.body.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.top = `-${scrollY}px`;
-            document.body.style.width = '100%';
-            const root = document.getElementById('root');
-            if (root) root.style.pointerEvents = 'none';
-            const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') setSelectedCert(null); };
-            window.addEventListener('keydown', handleEsc);
-            return () => {
-                document.body.style.overflow = ''; document.body.style.position = ''; document.body.style.top = ''; document.body.style.width = '';
-                window.scrollTo(0, scrollY);
-                if (root) root.style.pointerEvents = '';
-                window.removeEventListener('keydown', handleEsc);
-            };
+        } else {
+            document.body.style.overflow = 'unset';
         }
-    }, [selectedCert]);
+
+        // Cleanup on unmount
         return () => {
             document.body.style.overflow = 'unset';
         };
