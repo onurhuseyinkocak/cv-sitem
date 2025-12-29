@@ -212,14 +212,14 @@ export const cvData: CVData = {
             issuer: "Google / Coursera",
             date: "June 2024",
             credentialUrl: "https://coursera.org/share/32a3b220aaeb8b984646a5296d79a171",
-            image: "/certificates/google-ux-design.jpg"
+            image: `${import.meta.env.BASE_URL}certificates/google-ux-design.jpg`
         },
         {
             id: "2",
             title: "Associate Degree in Computer Programming",
             issuer: "Anadolu University - Open Education Faculty",
             date: "January 2025",
-            image: "/certificates/anadolu-diploma.jpg"
+            image: `${import.meta.env.BASE_URL}certificates/anadolu-diploma.jpg`
         },
         {
             id: "3",
@@ -227,21 +227,21 @@ export const cvData: CVData = {
             issuer: "Siliconmade Academy / ICCW Certified",
             date: "March 2025",
             credentialUrl: "https://iccw.us/iccw/admin/view-certificate/59440/21",
-            image: "/certificates/mobile-frontend-iccw.jpg"
+            image: `${import.meta.env.BASE_URL}certificates/mobile-frontend-iccw.jpg`
         },
         {
             id: "4",
             title: "Mobile Frontend Training Certificate",
             issuer: "Siliconmade Academy",
             date: "March 2025",
-            image: "/certificates/mobile-frontend-siliconmade.jpg"
+            image: `${import.meta.env.BASE_URL}certificates/mobile-frontend-siliconmade.jpg`
         },
         {
             id: "5",
             title: "Fundamentals of Programming Training",
             issuer: "Siliconmade Academy",
             date: "October 2024",
-            image: "/certificates/fundamentals-programming.jpg"
+            image: `${import.meta.env.BASE_URL}certificates/fundamentals-programming.jpg`
         },
         {
             id: "6",
@@ -249,7 +249,7 @@ export const cvData: CVData = {
             issuer: "TopTalent Business School / Türkiye İş Bankası",
             date: "December 2022",
             credentialUrl: "https://toptalent.co/businessschool/verify/73612CCE2D-73612BE302-73435EA50D/",
-            image: "/certificates/toptalent-it-class.jpg"
+            image: `${import.meta.env.BASE_URL}certificates/toptalent-it-class.jpg`
         },
         {
             id: "7",
@@ -257,14 +257,14 @@ export const cvData: CVData = {
             issuer: "TopTalent Business School",
             date: "July 2022",
             credentialUrl: "https://toptalent.co/businessschool/verify/735B36ED89-735B36C48A-73435EA50D/",
-            image: "/certificates/toptalent-english-c1.jpg"
+            image: `${import.meta.env.BASE_URL}certificates/toptalent-english-c1.jpg`
         },
         {
             id: "8",
             title: "Mobile Frontend Software Expertise Certificate - 184 Hours",
             issuer: "Mudanya University - MUDUSEM",
             date: "March 2025",
-            image: "/certificates/mudanya-mobile-frontend.jpg"
+            image: `${import.meta.env.BASE_URL}certificates/mudanya-mobile-frontend.jpg`
         }
     ]
 };
