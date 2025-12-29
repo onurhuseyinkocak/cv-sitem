@@ -188,13 +188,15 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 10000;
-    padding: 1rem;
+    z-index: 99999;
+    /* WAY above navbar */
+    padding: 0;
+    /* NO padding */
     overflow: hidden;
 }
 
@@ -241,11 +243,12 @@
 }
 
 .modal-content {
-    padding: 1rem;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
     max-height: 100%;
     overflow: hidden;
+    flex: 1;
 }
 
 .modal-header {
