@@ -11,7 +11,8 @@ import './App.css'
 
 const App = () => {
   return (
-    <div className="app">`n      <ParticleBackground />
+    <div className="app">
+      <ParticleBackground />
       <Navbar />
       <main className="main-content">
         <Hero />
