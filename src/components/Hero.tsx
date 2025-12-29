@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { cvData } from '../data/data';
+import ProjectQuoteModal from './ProjectQuoteModal';
 import './Hero.css';
 
 const sections = ['hero', 'about', 'projects', 'experience', 'certificates', 'contact'];
 
 const Hero = () => {
-    const { personal } = cvData;
     const [isAtBottom, setIsAtBottom] = useState(false);
     const [currentSection, setCurrentSection] = useState(0);
+    const [showQuoteModal, setShowQuoteModal] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -117,7 +118,7 @@ const Hero = () => {
                             className="btn btn-primary btn-lg"
                             whileHover={{ scale: 1.05, boxShadow: "0 10px 40px rgba(102, 126, 234, 0.4)" }}
                             whileTap={{ scale: 0.95 }}
-                            onClick={() => scrollToSection('contact')}
+                            onClick={() => setShowQuoteModal(true)}
                         >
                             <span>🚀</span> Start Your Project
                         </motion.button>
@@ -253,6 +254,12 @@ const Hero = () => {
                     {isAtBottom ? 'Top' : 'Next'}
                 </div>
             </motion.div>
+
+            {/* Project Quote Modal */}
+            <ProjectQuoteModal
+                isOpen={showQuoteModal}
+                onClose={() => setShowQuoteModal(false)}
+            />
         </section>
     );
 };
