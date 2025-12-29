@@ -130,50 +130,90 @@ const ProjectQuoteModal = ({ isOpen, onClose }: ProjectQuoteModalProps) => {
 
     const formatEmailMessage = (data: FormData): string => {
         const estimatedPrice = calculateEstimatedPrice();
-        
-        return [
-            ' NEW PROJECT QUOTE REQUEST',
-            '================================',
-            '',
-            ' CLIENT INFORMATION',
-            '--------------------------------',
-            'Name:     ' + data.fullName,
-            'Email:    ' + data.email,
-            'Phone:    ' + (data.phone || 'Not provided'),
-            'Company:  ' + (data.company || 'Not provided'),
-            '',
-            '--------------------------------',
-            'Category:   ' + data.appCategory,
-            'App Type:   ' + data.appType,
-            'Platforms:  ' + (data.platforms.length > 0 ? data.platforms.join(', ') : 'Not specified'),
-            '',
-            ' DESIGN & FEATURES',
-            '--------------------------------',
-            'Design Preference:  ' + data.designPreference,
-            'Authentication:     ' + data.authentication,
-            '',
-            'Key Features:',
-            data.keyFeatures,
-            '',
-            ' TECHNICAL REQUIREMENTS',
-            '--------------------------------',
-            'Backend/Database:      ' + data.backend,
-            'Payment Integration:   ' + data.paymentIntegration,
-            'Push Notifications:    ' + data.pushNotifications,
-            '',
-            ' TIMELINE & BUDGET',
-            '--------------------------------',
-            'Desired Timeline:  ' + data.timeline,
-            'Budget Range:      ' + data.budget,
-            '',
-            data.additionalDetails ? ' ADDITIONAL DETAILS\\n--------------------------------\\n' + data.additionalDetails + '\\n' : '',
-            ' ESTIMATED PRICE: $' + estimatedPrice.toLocaleString(),
-            '  Automated estimate. Final pricing via email after review.',
-            '',
-            '---',
-            ' From: CV Website - Project Quote Form',
-            ' Date: ' + new Date().toLocaleString('tr-TR', { dateStyle: 'full', timeStyle: 'short' })
-        ].filter(line => line !== '').join('\\n');
+
+        return `
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+        .section { background: #f9f9f9; padding: 20px; margin: 10px 0; border-left: 4px solid #667eea; }
+        .section-title { color: #667eea; font-weight: bold; font-size: 18px; margin-bottom: 10px; border-bottom: 2px solid #667eea; padding-bottom: 5px; }
+        .info-row { display: flex; margin: 8px 0; }
+        .label { font-weight: bold; min-width: 180px; color: #555; }
+        .value { color: #333; }
+        .price-estimate { background: linear-gradient(135deg, #667eea15, #764ba215); border: 2px solid #667eea; padding: 20px; text-align: center; margin: 20px 0; border-radius: 10px; }
+        .price-amount { font-size: 36px; font-weight: bold; color: #667eea; margin: 10px 0; }
+        .disclaimer { font-style: italic; color: #666; font-size: 14px; margin-top: 10px; }
+        .footer { text-align: center; padding: 20px; color: #999; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 NEW PROJECT QUOTE REQUEST</h1>
+            <p>Received: ${new Date().toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'short' })}</p>
+        </div>
+
+        <div class="section">
+            <div class="section-title">👤 CLIENT INFORMATION</div>
+            <div class="info-row"><span class="label">Name:</span><span class="value">${data.fullName}</span></div>
+            <div class="info-row"><span class="label">Email:</span><span class="value">${data.email}</span></div>
+            <div class="info-row"><span class="label">Phone:</span><span class="value">${data.phone || 'Not provided'}</span></div>
+            <div class="info-row"><span class="label">Company:</span><span class="value">${data.company || 'Not provided'}</span></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">💡 PROJECT DETAILS</div>
+            <div class="info-row"><span class="label">Category:</span><span class="value">${data.appCategory}</span></div>
+            <div class="info-row"><span class="label">App Type:</span><span class="value">${data.appType}</span></div>
+            <div class="info-row"><span class="label">Platforms:</span><span class="value">${data.platforms.length > 0 ? data.platforms.join(', ') : 'Not specified'}</span></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">🎨 DESIGN & FEATURES</div>
+            <div class="info-row"><span class="label">Design Preference:</span><span class="value">${data.designPreference}</span></div>
+            <div class="info-row"><span class="label">Authentication:</span><span class="value">${data.authentication}</span></div>
+            <div class="info-row"><span class="label">Key Features:</span></div>
+            <div style="margin-left: 20px; background: white; padding: 15px; border-radius: 5px; margin-top: 10px; white-space: pre-wrap;">${data.keyFeatures}</div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">⚙️ TECHNICAL REQUIREMENTS</div>
+            <div class="info-row"><span class="label">Backend/Database:</span><span class="value">${data.backend}</span></div>
+            <div class="info-row"><span class="label">Payment Integration:</span><span class="value">${data.paymentIntegration}</span></div>
+            <div class="info-row"><span class="label">Push Notifications:</span><span class="value">${data.pushNotifications}</span></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">⏰ TIMELINE & BUDGET</div>
+            <div class="info-row"><span class="label">Desired Timeline:</span><span class="value">${data.timeline}</span></div>
+            <div class="info-row"><span class="label">Budget Range:</span><span class="value">${data.budget}</span></div>
+            ${data.additionalDetails ? `
+            <div class="info-row"><span class="label">Additional Details:</span></div>
+            <div style="margin-left: 20px; background: white; padding: 15px; border-radius: 5px; margin-top: 10px; white-space: pre-wrap;">${data.additionalDetails}</div>
+            ` : ''}
+        </div>
+
+        <div class="price-estimate">
+            <div style="font-size: 18px; color: #555;">💰 Estimated Price Range</div>
+            <div class="price-amount">$${estimatedPrice.toLocaleString()}</div>
+            <div class="disclaimer">
+                ⚠️ This is an automated estimate based on selected options.<br>
+                Final pricing will be provided via email after detailed project review.
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>📧 Sent from CV Website - Project Quote Form</p>
+            <p>Please respond to this inquiry within 24-48 hours</p>
+        </div>
+    </div>
+</body>
+</html>
+        `.trim();
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
