@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cvData } from '../data/data';
 import type { Certificate } from '../types/types';
 import './Certificates.css';
@@ -7,6 +7,20 @@ import './Certificates.css';
 const Certificates = () => {
     const { certificates } = cvData;
     const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
+
+    // Disable body scroll when modal is open
+    useEffect(() => {
+        if (selectedCert) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+
+        // Cleanup on unmount
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [selectedCert]);
 
     return (
         <section id="certificates" className="section certificates-section">
