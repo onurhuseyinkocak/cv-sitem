@@ -1,54 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import FloatingCard from './FloatingCard';
 import ProjectQuoteModal from './ProjectQuoteModal';
 import './Hero.css';
 
-const sections = ['hero', 'about', 'projects', 'experience', 'certificates', 'contact'];
 
 const Hero = () => {
-    const [isAtBottom, setIsAtBottom] = useState(false);
-    const [currentSection, setCurrentSection] = useState(0);
     const [showQuoteModal, setShowQuoteModal] = useState(false);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            const windowHeight = window.innerHeight;
-
-            sections.forEach((sectionId, index) => {
-                const element = document.getElementById(sectionId);
-                if (element) {
-                    const rect = element.getBoundingClientRect();
-                    if (rect.top <= windowHeight / 2 && rect.bottom >= windowHeight / 2) {
-                        setCurrentSection(index);
-                        setIsAtBottom(index === sections.length - 1);
-                    }
-                }
-            });
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        handleScroll();
-
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
 
     const scrollToSection = (sectionId: string) => {
         const element = document.getElementById(sectionId);
         if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    };
-
-    const handleScrollNavigate = () => {
-        if (isAtBottom) {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-            const nextIndex = Math.min(currentSection + 1, sections.length - 1);
-            const nextElement = document.getElementById(sections[nextIndex]);
-            if (nextElement) {
-                nextElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
         }
     };
 

@@ -1,36 +1,31 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect } from 'react';
-import { cvData } from '../data/data';
-import type { Certificate } from '../types/types';
-import './Certificates.css';
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
+import { cvData } from "../data/data";
+import type { Certificate } from "../types/types";
+import "./Certificates.css";
 
 const Certificates = () => {
     const { certificates } = cvData;
     const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
 
-    // Disable body scroll when modal is open
+    // 🔒 HARD BODY LOCK
     useEffect(() => {
         if (selectedCert) {
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = "hidden";
         } else {
-            document.body.style.overflow = 'unset';
+            document.body.style.overflow = "";
         }
 
-        // Cleanup on unmount
         return () => {
-            document.body.style.overflow = 'unset';
+            document.body.style.overflow = "";
         };
     }, [selectedCert]);
 
     return (
-        <section id="certificates" className="section certificates-section">
-            <div className="container">
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                >
+        <>
+            <section id="certificates" className="section certificates-section">
+                <div className="container">
                     <h2 className="section-title text-center">
                         🎓 Education & Certifications
                     </h2>
@@ -42,123 +37,80 @@ const Certificates = () => {
                         {certificates.map((cert, index) => (
                             <motion.div
                                 key={cert.id}
-                                className="certificate-card glass-card"
+                                className="certificate-card"
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.1 }}
-                                whileHover={{ y: -5, scale: 1.02 }}
+                                whileHover={{ scale: 1.02 }}
                                 onClick={() => setSelectedCert(cert)}
-                                style={{ cursor: 'pointer' }}
                             >
-                                {cert.image && (
-                                    <div className="certificate-image-wrapper">
-                                        <img
-                                            src={cert.image}
-                                            alt={cert.title}
-                                            className="certificate-image"
-                                            loading="lazy"
-                                        />
-                                        <div className="certificate-overlay">
-                                            <span className="view-certificate">🔍 View Certificate</span>
-                                        </div>
+                                <div className="certificate-image-wrapper">
+                                    <img
+                                        src={cert.image}
+                                        alt={cert.title}
+                                        className="certificate-image"
+                                    />
+                                    <div className="certificate-overlay">
+                                        🔍 View Certificate
                                     </div>
-                                )}
+                                </div>
 
                                 <div className="certificate-content">
-                                    <h3 className="certificate-title">{cert.title}</h3>
-                                    <p className="certificate-issuer">
-                                        <span className="issuer-icon">🏛️</span>
-                                        {cert.issuer}
-                                    </p>
-                                    <p className="certificate-date">
-                                        <span className="date-icon">📅</span>
-                                        {cert.date}
-                                    </p>
-
-                                    {cert.credentialUrl && (
-                                        <a
-                                            href={cert.credentialUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="verify-link"
-                                            onClick={(e) => e.stopPropagation()}
-                                        >
-                                            ✓ Verify Credential
-                                        </a>
-                                    )}
+                                    <h3>{cert.title}</h3>
+                                    <p>🏛️ {cert.issuer}</p>
+                                    <p>📅 {cert.date}</p>
                                 </div>
                             </motion.div>
                         ))}
                     </div>
-                </motion.div>
-            </div>
+                </div>
+            </section>
 
-            {/* Certificate Modal Viewer */}
-            <AnimatePresence>
-                {selectedCert && (
-                    <motion.div
-                        className="certificate-modal-overlay"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        onClick={() => setSelectedCert(null)}
-                    >
+            {/* ===================== MODAL (PORTAL) ===================== */}
+            {createPortal(
+                <AnimatePresence>
+                    {selectedCert && (
                         <motion.div
-                            className="certificate-modal"
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.8, opacity: 0 }}
-                            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                            onClick={(e) => e.stopPropagation()}
+                            className="certificate-modal-overlay"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setSelectedCert(null)}
                         >
-                            <button
-                                className="modal-close"
-                                onClick={() => setSelectedCert(null)}
-                                aria-label="Close modal"
+                            <motion.div
+                                className="certificate-modal"
+                                initial={{ scale: 0.85, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0.85, opacity: 0 }}
+                                transition={{ type: "spring", stiffness: 260, damping: 25 }}
+                                onClick={(e) => e.stopPropagation()}
                             >
-                                ✕
-                            </button>
+                                <button
+                                    className="modal-close"
+                                    onClick={() => setSelectedCert(null)}
+                                >
+                                    ✕
+                                </button>
 
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h3>{selectedCert.title}</h3>
-                                    <p className="modal-issuer">
-                                        <span>🏛️</span> {selectedCert.issuer}
-                                    </p>
-                                    <p className="modal-date">
-                                        <span>📅</span> {selectedCert.date}
-                                    </p>
-                                </div>
+                                <h3>{selectedCert.title}</h3>
+                                <p>🏛️ {selectedCert.issuer}</p>
+                                <p>📅 {selectedCert.date}</p>
 
                                 <div className="modal-image-container">
                                     <img
                                         src={selectedCert.image}
                                         alt={selectedCert.title}
-                                        className="modal-image"
                                     />
                                 </div>
-
-                                {selectedCert.credentialUrl && (
-                                    <div className="modal-footer">
-                                        <a
-                                            href={selectedCert.credentialUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="modal-verify-btn"
-                                        >
-                                            ✓ Verify Credential Externally
-                                        </a>
-                                    </div>
-                                )}
-                            </div>
+                            </motion.div>
                         </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </section>
+                    )}
+                </AnimatePresence>,
+                document.body
+            )}
+        </>
     );
 };
 
 export default Certificates;
-
